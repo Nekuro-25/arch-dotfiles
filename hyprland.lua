@@ -29,7 +29,7 @@ hl.monitor({
 ---------------------
 
 local terminal    = "kitty"
-local fileManager = "thunar"
+local fileManager = "kitty --class yazi -e yazi"
 local menu        = "hyprlauncher"
 
 
