@@ -1,0 +1,1676 @@
+-- =========================================================
+-- HYPRLAND LUA CONFIGURATION
+-- =========================================================
+--
+-- Platform:
+--   Arch Linux
+--   ThinkPad T495
+--
+-- Design goals:
+--   - Cinematic minimalism
+--   - Performance over visual effects
+--   - Keyboard-first workflow
+--   - Tiling as the default behavior
+--
+-- Current decisions:
+--   Layout       : Dwindle
+--   Alternative  : Master
+--   Blur         : OFF
+--   Active       : 1.00 opacity
+--   Inactive     : 0.80 opacity
+--   Rounding     : 8
+--   Inner gaps   : 5
+--   Outer gaps   : 14
+--   Navigation   : Vim H/J/K/L
+--   Mouse binds  : NONE
+--   Special WS   : NONE
+--   Autostart    : Waybar + Hyprpaper
+--
+-- IMPORTANT:
+-- This is a Lua configuration using the Hyprland Lua
+-- interface. It is NOT a normal hyprland.conf file.
+--
+-- After changing this file:
+--
+--     hyprctl reload
+--
+-- Check for errors with:
+--
+--     hyprctl configerrors
+--
+-- =========================================================
+
+
+------------------------------------------------------------
+-- APPLICATION COMMANDS
+------------------------------------------------------------
+--
+-- Keep application commands in one place.
+--
+-- This makes it easier to replace applications later
+-- without modifying the keybinding section.
+--
+------------------------------------------------------------
+
+local terminal    = "kitty"
+local fileManager = "kitty --class yazi -e yazi"
+local menu        = "rofi -show drun"
+
+-- Waybar hardware information toggle.
+--
+-- SUPER + I
+--
+-- Shows / hides:
+--   CPU
+--   RAM
+--   Temperature
+--
+local waybarHardwareToggle =
+    "$HOME/.config/waybar/scripts/toggle-hardware.sh"
+
+
+------------------------------------------------------------
+-- KEYBOARD MODIFIER
+------------------------------------------------------------
+--
+-- Main modifier used throughout the configuration.
+--
+------------------------------------------------------------
+
+local mainMod = "SUPER"
+
+
+------------------------------------------------------------
+-- MONITOR
+------------------------------------------------------------
+--
+-- No monitor is explicitly configured.
+--
+-- The ThinkPad T495 display is currently allowed to use
+-- Hyprland's default monitor behavior.
+--
+-- Inspect available monitors with:
+--
+--     hyprctl monitors
+--
+-- A fixed monitor configuration can be added later if
+-- external monitors or resolution/scaling requirements
+-- become relevant.
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- AUTOSTART
+------------------------------------------------------------
+--
+-- Applications that should start with Hyprland.
+--
+-- Current:
+--   Waybar
+--   Hyprpaper
+--
+-- Both are launched through the Hyprland start event.
+--
+------------------------------------------------------------
+
+hl.on("hyprland.start", function ()
+
+    -- Status bar
+    hl.exec_cmd("waybar")
+
+    -- Wallpaper daemon
+    hl.exec_cmd("hyprpaper")
+
+end)
+
+
+------------------------------------------------------------
+-- ENVIRONMENT
+------------------------------------------------------------
+--
+-- Keep cursor size consistent across applications using
+-- XCursor and Hyprland cursor handling.
+--
+------------------------------------------------------------
+
+hl.env("XCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_SIZE", "24")
+
+
+------------------------------------------------------------
+-- GENERAL APPEARANCE
+------------------------------------------------------------
+
+hl.config({
+
+    general = {
+
+        ----------------------------------------------------
+        -- GAPS
+        ----------------------------------------------------
+        --
+        -- Inner:
+        --   Space between tiled windows.
+        --
+        -- Outer:
+        --   Space between windows and screen edges.
+        --
+
+        gaps_in  = 5,
+        gaps_out = 14,
+
+
+        ----------------------------------------------------
+        -- BORDER
+        ----------------------------------------------------
+
+        border_size = 1,
+
+
+        ----------------------------------------------------
+        -- TEARING
+        ----------------------------------------------------
+        --
+        -- Disabled intentionally.
+        --
+        -- Priority:
+        --   visual stability > minimum latency.
+        --
+
+        allow_tearing = false,
+
+
+        ----------------------------------------------------
+        -- DEFAULT LAYOUT
+        ----------------------------------------------------
+        --
+        -- Dwindle is the primary tiling layout.
+        --
+
+        layout = "dwindle",
+
+
+        ----------------------------------------------------
+        -- BORDER RESIZE
+        ----------------------------------------------------
+        --
+        -- Window resizing is handled through keyboard
+        -- bindings rather than border dragging.
+        --
+
+        resize_on_border = false,
+
+
+        ----------------------------------------------------
+        -- BORDER COLORS
+        ----------------------------------------------------
+        --
+        -- Temporary neutral palette.
+        --
+        -- These can later be replaced with the final
+        -- dark-crimson dragon palette.
+        --
+
+        col = {
+
+            active_border =
+                "rgba(ffffffff)",
+
+            inactive_border =
+                "rgba(66666699)",
+
+        },
+
+    },
+
+
+    --------------------------------------------------------
+    -- WINDOW DECORATION
+    --------------------------------------------------------
+
+    decoration = {
+
+        ----------------------------------------------------
+        -- ROUNDING
+        ----------------------------------------------------
+
+        rounding       = 8,
+        rounding_power = 2,
+
+
+        ----------------------------------------------------
+        -- OPACITY
+        ----------------------------------------------------
+        --
+        -- Active:
+        --   Fully opaque.
+        --
+        -- Inactive:
+        --   Slightly transparent.
+        --
+
+        active_opacity   = 1.00,
+        inactive_opacity = 0.80,
+
+
+        ----------------------------------------------------
+        -- BLUR
+        ----------------------------------------------------
+        --
+        -- Disabled for performance reasons.
+        --
+
+        blur = {
+
+            enabled = false,
+
+        },
+
+
+        ----------------------------------------------------
+        -- SHADOW
+        ----------------------------------------------------
+        --
+        -- Provides separation between windows and wallpaper.
+        --
+
+        shadow = {
+
+            enabled = true,
+
+            range = 6,
+
+            render_power = 2,
+
+            color = "rgba(000000aa)",
+
+        },
+
+    },
+
+
+    --------------------------------------------------------
+    -- ANIMATIONS
+    --------------------------------------------------------
+
+    animations = {
+
+        enabled = true,
+
+    },
+
+
+    --------------------------------------------------------
+    -- MISCELLANEOUS
+    --------------------------------------------------------
+
+    misc = {
+
+        -- Wallpaper is handled by Hyprpaper.
+        force_default_wallpaper = 0,
+
+        -- Remove the default Hyprland logo.
+        disable_hyprland_logo = true,
+
+    },
+
+})
+
+
+------------------------------------------------------------
+-- DWINDLE
+------------------------------------------------------------
+
+hl.config({
+
+    dwindle = {
+
+        -- Preserve existing split orientation when possible.
+        preserve_split = true,
+
+    },
+
+})
+
+
+------------------------------------------------------------
+-- MASTER
+------------------------------------------------------------
+--
+-- Master remains available as an alternative layout.
+--
+-- Dwindle remains the default.
+--
+------------------------------------------------------------
+
+hl.config({
+
+    master = {
+
+        new_status = "master",
+
+    },
+
+})
+
+
+------------------------------------------------------------
+-- INPUT
+------------------------------------------------------------
+
+hl.config({
+
+    input = {
+
+        ----------------------------------------------------
+        -- KEYBOARD
+        ----------------------------------------------------
+
+        kb_layout  = "us",
+        kb_variant = "",
+        kb_model   = "",
+        kb_options = "",
+        kb_rules   = "",
+
+
+        ----------------------------------------------------
+        -- POINTER FOCUS
+        ----------------------------------------------------
+
+        follow_mouse = 1,
+
+
+        ----------------------------------------------------
+        -- SENSITIVITY
+        ----------------------------------------------------
+
+        sensitivity = 0,
+
+
+        ----------------------------------------------------
+        -- TOUCHPAD
+        ----------------------------------------------------
+
+        touchpad = {
+
+            natural_scroll = true,
+
+        },
+
+    },
+
+})
+
+
+------------------------------------------------------------
+-- GESTURES
+------------------------------------------------------------
+--
+-- Disabled intentionally.
+--
+-- The current workflow is keyboard-first.
+--
+-- Gestures can be introduced later if they provide a real
+-- productivity advantage.
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- ANIMATION CURVES
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- QUICK
+------------------------------------------------------------
+
+hl.curve(
+
+    "quick",
+
+    {
+
+        type = "bezier",
+
+        points = {
+            {0.15, 0},
+            {0.10, 1},
+        },
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- EASE OUT QUINT
+------------------------------------------------------------
+
+hl.curve(
+
+    "easeOutQuint",
+
+    {
+
+        type = "bezier",
+
+        points = {
+            {0.23, 1},
+            {0.32, 1},
+        },
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- ALMOST LINEAR
+------------------------------------------------------------
+
+hl.curve(
+
+    "almostLinear",
+
+    {
+
+        type = "bezier",
+
+        points = {
+            {0.50, 0.50},
+            {0.75, 1},
+        },
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- GLOBAL ANIMATION
+------------------------------------------------------------
+
+hl.animation({
+
+    leaf    = "global",
+    enabled = true,
+    speed   = 8,
+    bezier  = "default",
+
+})
+
+
+------------------------------------------------------------
+-- WINDOW MOVEMENT
+------------------------------------------------------------
+
+hl.animation({
+
+    leaf    = "windows",
+    enabled = true,
+    speed   = 5,
+    bezier  = "easeOutQuint",
+
+})
+
+
+------------------------------------------------------------
+-- WINDOW OPENING
+------------------------------------------------------------
+
+hl.animation({
+
+    leaf    = "windowsIn",
+    enabled = true,
+    speed   = 5,
+    bezier  = "easeOutQuint",
+    style   = "popin 70%",
+
+})
+
+
+------------------------------------------------------------
+-- WINDOW CLOSING
+------------------------------------------------------------
+
+hl.animation({
+
+    leaf    = "windowsOut",
+    enabled = true,
+    speed   = 5,
+    bezier  = "quick",
+    style   = "popin 70%",
+
+})
+
+
+------------------------------------------------------------
+-- FADE
+------------------------------------------------------------
+
+hl.animation({
+
+    leaf    = "fade",
+    enabled = true,
+    speed   = 5,
+    bezier  = "almostLinear",
+
+})
+
+
+------------------------------------------------------------
+-- WORKSPACE TRANSITION
+------------------------------------------------------------
+
+hl.animation({
+
+    leaf    = "workspaces",
+    enabled = true,
+    speed   = 5,
+    bezier  = "almostLinear",
+    style   = "fade",
+
+})
+
+
+------------------------------------------------------------
+-- APPLICATION KEYBINDS
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- TERMINAL
+------------------------------------------------------------
+--
+-- SUPER + ENTER
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + Return",
+
+    hl.dsp.exec_cmd(terminal),
+
+    {
+
+        description = "Open terminal",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- FILE MANAGER
+------------------------------------------------------------
+--
+-- SUPER + E
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + E",
+
+    hl.dsp.exec_cmd(fileManager),
+
+    {
+
+        description = "Open file manager",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- APPLICATION LAUNCHER
+------------------------------------------------------------
+--
+-- SUPER + SPACE
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + Space",
+
+    hl.dsp.exec_cmd(menu),
+
+    {
+
+        description = "Open application launcher",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- CLOSE WINDOW
+------------------------------------------------------------
+--
+-- SUPER + Q
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + Q",
+
+    hl.dsp.window.close(),
+
+    {
+
+        description = "Close active window",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- WINDOW STATE
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- TOGGLE FLOATING
+------------------------------------------------------------
+--
+-- SUPER + V
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + V",
+
+    hl.dsp.window.float({
+
+        action = "toggle",
+
+    }),
+
+    {
+
+        description = "Toggle floating",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- FULLSCREEN
+------------------------------------------------------------
+--
+-- SUPER + F
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + F",
+
+    hl.dsp.window.fullscreen(),
+
+    {
+
+        description = "Toggle fullscreen",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- PSEUDO TILE
+------------------------------------------------------------
+--
+-- SUPER + P
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + P",
+
+    hl.dsp.window.pseudo(),
+
+    {
+
+        description = "Toggle pseudo tile",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- VIM WINDOW NAVIGATION
+------------------------------------------------------------
+--
+-- SUPER + H → Left
+-- SUPER + J → Down
+-- SUPER + K → Up
+-- SUPER + L → Right
+--
+------------------------------------------------------------
+
+local directions = {
+
+    H = "left",
+    J = "down",
+    K = "up",
+    L = "right",
+
+}
+
+
+for key, direction in pairs(directions) do
+
+    hl.bind(
+
+        mainMod .. " + " .. key,
+
+        hl.dsp.focus({
+
+            direction = direction,
+
+        }),
+
+        {
+
+            description = "Focus " .. direction,
+
+        }
+
+    )
+
+end
+
+
+------------------------------------------------------------
+-- MOVE WINDOWS
+------------------------------------------------------------
+--
+-- SUPER + SHIFT + H/J/K/L
+--
+------------------------------------------------------------
+
+for key, direction in pairs(directions) do
+
+    hl.bind(
+
+        mainMod .. " + SHIFT + " .. key,
+
+        hl.dsp.window.move({
+
+            direction = direction,
+
+        }),
+
+        {
+
+            description = "Move window " .. direction,
+
+        }
+
+    )
+
+end
+
+
+------------------------------------------------------------
+-- RESIZE WINDOWS
+------------------------------------------------------------
+--
+-- SUPER + CTRL + H/J/K/L
+--
+-- Holding the key continuously resizes the window.
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- RESIZE LEFT
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + CTRL + H",
+
+    hl.dsp.window.resize({
+
+        x = -20,
+        y = 0,
+        relative = true,
+
+    }),
+
+    {
+
+        repeating = true,
+        description = "Resize window left",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- RESIZE RIGHT
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + CTRL + L",
+
+    hl.dsp.window.resize({
+
+        x = 20,
+        y = 0,
+        relative = true,
+
+    }),
+
+    {
+
+        repeating = true,
+        description = "Resize window right",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- RESIZE UP
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + CTRL + K",
+
+    hl.dsp.window.resize({
+
+        x = 0,
+        y = -20,
+        relative = true,
+
+    }),
+
+    {
+
+        repeating = true,
+        description = "Resize window up",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- RESIZE DOWN
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + CTRL + J",
+
+    hl.dsp.window.resize({
+
+        x = 0,
+        y = 20,
+        relative = true,
+
+    }),
+
+    {
+
+        repeating = true,
+        description = "Resize window down",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- LAYOUT CONTROL
+------------------------------------------------------------
+--
+-- SUPER + ALT + J
+--
+-- Toggle split orientation.
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + ALT + J",
+
+    hl.dsp.layout("togglesplit"),
+
+    {
+
+        description = "Toggle split orientation",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- WORKSPACE DEFINITIONS
+------------------------------------------------------------
+--
+-- Fixed conceptual workspace organization:
+--
+--   1  Terminal
+--   2  Development
+--   3  Browser
+--   4  Research
+--   5  Communication
+--   6  Files
+--   7  Documents
+--   8  System
+--   9  Free
+--  10  Free
+--
+-- These names currently document the intended workflow.
+-- They do not automatically assign applications.
+--
+------------------------------------------------------------
+
+local workspaces = {
+
+    [1]  = "Terminal",
+    [2]  = "Development",
+    [3]  = "Browser",
+    [4]  = "Research",
+    [5]  = "Communication",
+    [6]  = "Files",
+    [7]  = "Documents",
+    [8]  = "System",
+    [9]  = "Free",
+    [10] = "Free",
+
+}
+
+
+------------------------------------------------------------
+-- WORKSPACE KEYBINDS
+------------------------------------------------------------
+--
+-- SUPER + 1..9
+--     Focus workspace 1..9
+--
+-- SUPER + 0
+--     Focus workspace 10
+--
+-- SUPER + SHIFT + 1..9
+--     Move window to workspace 1..9
+--
+-- SUPER + SHIFT + 0
+--     Move window to workspace 10
+--
+------------------------------------------------------------
+
+for i = 1, 10 do
+
+    local key = i % 10
+
+
+    --------------------------------------------------------
+    -- FOCUS WORKSPACE
+    --------------------------------------------------------
+
+    hl.bind(
+
+        mainMod .. " + " .. key,
+
+        hl.dsp.focus({
+
+            workspace = i,
+
+        }),
+
+        {
+
+            description =
+                "Go to workspace "
+                .. i
+                .. " ("
+                .. workspaces[i]
+                .. ")",
+
+        }
+
+    )
+
+
+    --------------------------------------------------------
+    -- MOVE WINDOW TO WORKSPACE
+    --------------------------------------------------------
+
+    hl.bind(
+
+        mainMod .. " + SHIFT + " .. key,
+
+        hl.dsp.window.move({
+
+            workspace = i,
+
+        }),
+
+        {
+
+            description =
+                "Move window to workspace "
+                .. i
+                .. " ("
+                .. workspaces[i]
+                .. ")",
+
+        }
+
+    )
+
+end
+
+
+------------------------------------------------------------
+-- AUDIO
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- VOLUME UP
+------------------------------------------------------------
+--
+-- XF86AudioRaiseVolume
+--
+-- Increase volume by 5%.
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioRaiseVolume",
+
+    hl.dsp.exec_cmd(
+        "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+    ),
+
+    {
+
+        locked = true,
+        repeating = true,
+        description = "Increase volume",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- VOLUME DOWN
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioLowerVolume",
+
+    hl.dsp.exec_cmd(
+        "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+    ),
+
+    {
+
+        locked = true,
+        repeating = true,
+        description = "Decrease volume",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- SPEAKER MUTE
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioMute",
+
+    hl.dsp.exec_cmd(
+        "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    ),
+
+    {
+
+        locked = true,
+        description = "Toggle speaker mute",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- MICROPHONE MUTE
+------------------------------------------------------------
+--
+-- This is an operating-system keybind, not a Waybar
+-- microphone module.
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioMicMute",
+
+    hl.dsp.exec_cmd(
+        "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+    ),
+
+    {
+
+        locked = true,
+        description = "Toggle microphone mute",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- BRIGHTNESS
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- BRIGHTNESS UP
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86MonBrightnessUp",
+
+    hl.dsp.exec_cmd(
+        "brightnessctl -e4 -n2 set 5%+"
+    ),
+
+    {
+
+        locked = true,
+        repeating = true,
+        description = "Increase brightness",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- BRIGHTNESS DOWN
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86MonBrightnessDown",
+
+    hl.dsp.exec_cmd(
+        "brightnessctl -e4 -n2 set 5%-"
+    ),
+
+    {
+
+        locked = true,
+        repeating = true,
+        description = "Decrease brightness",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- MEDIA
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- NEXT TRACK
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioNext",
+
+    hl.dsp.exec_cmd("playerctl next"),
+
+    {
+
+        locked = true,
+        description = "Next track",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- PLAY / PAUSE
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioPlay",
+
+    hl.dsp.exec_cmd("playerctl play-pause"),
+
+    {
+
+        locked = true,
+        description = "Play / pause",
+
+    }
+
+)
+
+
+hl.bind(
+
+    "XF86AudioPause",
+
+    hl.dsp.exec_cmd("playerctl play-pause"),
+
+    {
+
+        locked = true,
+        description = "Play / pause",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- PREVIOUS TRACK
+------------------------------------------------------------
+
+hl.bind(
+
+    "XF86AudioPrev",
+
+    hl.dsp.exec_cmd("playerctl previous"),
+
+    {
+
+        locked = true,
+        description = "Previous track",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- EXIT HYPRLAND
+------------------------------------------------------------
+--
+-- SUPER + SHIFT + Q
+--
+-- Terminates the current Hyprland session.
+--
+------------------------------------------------------------
+
+hl.bind(
+
+    mainMod .. " + SHIFT + Q",
+
+    hl.dsp.exit(),
+
+    {
+
+        description = "Exit Hyprland session",
+
+    }
+
+)
+
+
+------------------------------------------------------------
+-- WINDOW RULES
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- XWAYLAND DRAG FIX
+------------------------------------------------------------
+
+hl.window_rule({
+
+    name = "fix-xwayland-drags",
+
+    match = {
+
+        class      = "^$",
+        title      = "^$",
+        xwayland   = true,
+        float      = true,
+        fullscreen = false,
+        pin        = false,
+
+    },
+
+    no_focus = true,
+
+})
+
+
+------------------------------------------------------------
+-- CUSTOMIZATION REFERENCE
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- OPACITY
+------------------------------------------------------------
+--
+-- Current:
+--
+--     active_opacity   = 1.00
+--     inactive_opacity = 0.80
+--
+-- More transparent:
+--
+--     inactive_opacity = 0.70
+--
+-- Less transparent:
+--
+--     inactive_opacity = 0.90
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- GAPS
+------------------------------------------------------------
+--
+-- Current:
+--
+--     gaps_in  = 5
+--     gaps_out = 14
+--
+-- More compact:
+--
+--     gaps_in  = 3
+--     gaps_out = 8
+--
+-- More spacious:
+--
+--     gaps_in  = 8
+--     gaps_out = 18
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- ROUNDING
+------------------------------------------------------------
+--
+-- Current:
+--
+--     rounding = 8
+--
+-- Completely sharp:
+--
+--     rounding = 0
+--
+-- Slightly rounded:
+--
+--     rounding = 4
+--
+-- More rounded:
+--
+--     rounding = 12
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- SHADOW
+------------------------------------------------------------
+--
+-- Current:
+--
+--     enabled      = true
+--     range        = 6
+--     render_power = 2
+--
+-- Disable:
+--
+--     enabled = false
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- BLUR
+------------------------------------------------------------
+--
+-- Current:
+--
+--     enabled = false
+--
+-- Recommendation:
+--
+-- Keep blur disabled while performance remains the
+-- primary priority.
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- LAYOUT
+------------------------------------------------------------
+--
+-- Current:
+--
+--     layout = "dwindle"
+--
+-- Alternative:
+--
+--     layout = "master"
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- KEYBOARD MAP
+------------------------------------------------------------
+--
+-- APPLICATIONS
+--
+-- SUPER + ENTER
+--     Terminal
+--
+-- SUPER + E
+--     File manager
+--
+-- SUPER + SPACE
+--     Application launcher
+--
+-- SUPER + I
+--     Toggle Waybar hardware information
+--
+--
+-- WINDOW
+--
+-- SUPER + Q
+--     Close window
+--
+-- SUPER + V
+--     Toggle floating
+--
+-- SUPER + F
+--     Fullscreen
+--
+-- SUPER + P
+--     Pseudo tile
+--
+--
+-- NAVIGATION
+--
+-- SUPER + H
+--     Focus left
+--
+-- SUPER + J
+--     Focus down
+--
+-- SUPER + K
+--     Focus up
+--
+-- SUPER + L
+--     Focus right
+--
+--
+-- MOVE
+--
+-- SUPER + SHIFT + H/J/K/L
+--
+--
+-- RESIZE
+--
+-- SUPER + CTRL + H/J/K/L
+--
+--
+-- SPLIT
+--
+-- SUPER + ALT + J
+--
+--
+-- WORKSPACE
+--
+-- SUPER + 1..9
+--     Workspace 1..9
+--
+-- SUPER + 0
+--     Workspace 10
+--
+-- SUPER + SHIFT + 1..9
+--     Move window to workspace 1..9
+--
+-- SUPER + SHIFT + 0
+--     Move window to workspace 10
+--
+--
+-- AUDIO
+--
+-- XF86AudioRaiseVolume
+--     Volume +
+--
+-- XF86AudioLowerVolume
+--     Volume -
+--
+-- XF86AudioMute
+--     Speaker mute
+--
+-- XF86AudioMicMute
+--     Microphone mute
+--
+--
+-- BRIGHTNESS
+--
+-- XF86MonBrightnessUp
+--     Brightness +
+--
+-- XF86MonBrightnessDown
+--     Brightness -
+--
+--
+-- MEDIA
+--
+-- XF86AudioNext
+--     Next track
+--
+-- XF86AudioPlay
+--     Play / pause
+--
+-- XF86AudioPause
+--     Play / pause
+--
+-- XF86AudioPrev
+--     Previous track
+--
+--
+-- SESSION
+--
+-- SUPER + SHIFT + Q
+--     Exit Hyprland
+--
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+-- DEBUG COMMANDS
+------------------------------------------------------------
+--
+-- Reload:
+--
+--     hyprctl reload
+--
+--
+-- Configuration errors:
+--
+--     hyprctl configerrors
+--
+--
+-- Keybindings:
+--
+--     hyprctl binds
+--
+--
+-- Windows:
+--
+--     hyprctl clients
+--
+--
+-- Workspaces:
+--
+--     hyprctl workspaces
+--
+--
+-- Monitors:
+--
+--     hyprctl monitors
+--
+--
+-- Input devices:
+--
+--     hyprctl devices
+--
+--
+-- Active window:
+--
+--     hyprctl activewindow
+--
+--
+-- Active workspace:
+--
+--     hyprctl activeworkspace
+--
+------------------------------------------------------------
+
+
+-- =========================================================
+-- END OF CONFIGURATION
+-- =========================================================
