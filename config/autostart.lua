@@ -10,4 +10,7 @@ hl.on("hyprland.start", function()
 
     -- Wallpaper daemon
     hl.exec_cmd("hyprpaper")
+
+    -- Idle & lock daemon
+    hl.exec_cmd("hypridle")
 end)
