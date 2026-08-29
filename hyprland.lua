@@ -20,6 +20,7 @@ require("keybinds.workspace")
 require("keybinds.hardware")
 require("keybinds.media")
 require("keybinds.session")
+require("keybinds.screenshot")
 
 -- Window rules
 require("rules.windows")
