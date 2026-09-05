@@ -21,6 +21,7 @@ require("keybinds.hardware")
 require("keybinds.media")
 require("keybinds.session")
 require("keybinds.screenshot")
+require("keybinds.notifications")
 
 -- Window rules
 require("rules.windows")
