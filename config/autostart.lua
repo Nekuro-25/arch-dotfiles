@@ -11,6 +11,10 @@ hl.on("hyprland.start", function()
     -- Notification daemon (start early so nothing is missed)
     hl.exec_cmd("mako")
 
+    -- Clipboard history daemon
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
+
     -- Status bar
     hl.exec_cmd("waybar")
 
