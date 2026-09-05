@@ -8,6 +8,6 @@ hl.bind("SUPER + SHIFT + Q", hl.dsp.exit(), {
 })
 
 -- SUPER + SHIFT + L → Lock session manually
-hl.bind("SUPER + SHIFT +  ALT + L", hl.dsp.exec_cmd("loginctl lock-session"), {
+hl.bind("SUPER + SHIFT + ALT + L", hl.dsp.exec_cmd("loginctl lock-session"), {
     description = "Lock session",
 })

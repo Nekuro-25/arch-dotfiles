@@ -7,7 +7,7 @@
 
 local apps = {
     terminal = "kitty",
-    fileManager = "kitty --class yazi -e yazi",
+    fileManager = "thunar",
     menu = "rofi -show drun",
 }
 
