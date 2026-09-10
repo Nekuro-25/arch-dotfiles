@@ -5,6 +5,9 @@
 -- =========================================================
 
 hl.on("hyprland.start", function()
+    -- Sync session env vars to D-Bus/systemd (required for portals)
+    hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+
     -- Ensure screenshot directory exists
     hl.exec_cmd("mkdir -p $HOME/Pictures/Screenshots")
 
