@@ -23,6 +23,7 @@ require("keybinds.session")
 require("keybinds.screenshot")
 require("keybinds.notifications")
 require("keybinds.clipboard")
+require("keybinds.scratchpad")
 
 -- Window rules
 require("rules.windows")

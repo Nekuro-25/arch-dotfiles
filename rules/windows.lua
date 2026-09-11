@@ -64,3 +64,17 @@ hl.window_rule({
     size = { 400, 225 },
     move = { "100%-420", "100%-245" },
 })
+
+-- Scratchpad terminal -> float, centered, dedicated special workspace
+hl.window_rule({
+    name = "scratchpad-terminal",
+
+    match = {
+        class = "^(kitty-scratchpad)$",
+    },
+
+    float = true,
+    center = true,
+    size = { 900, 550 },
+    workspace = "special:scratchpad",
+})
