@@ -1,55 +1,36 @@
 -- =========================================================
 -- HARDWARE KEYBINDS
 -- =========================================================
+-- Volume/brightness handled via swayosd-client, which calls
+-- wpctl/brightnessctl internally AND shows the OSD popup.
+-- =========================================================
 
--- Volume up
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(
-    "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-), {
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"), {
+    description = "Volume up",
     locked = true,
-    repeating = true,
-    description = "Increase volume",
 })
 
--- Volume down
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(
-    "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-), {
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"), {
+    description = "Volume down",
     locked = true,
-    repeating = true,
-    description = "Decrease volume",
 })
 
--- Speaker mute
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd(
-    "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-), {
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), {
+    description = "Toggle mute",
     locked = true,
-    description = "Toggle speaker mute",
 })
 
--- Microphone mute
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd(
-    "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-), {
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"), {
+    description = "Toggle mic mute",
     locked = true,
-    description = "Toggle microphone mute",
 })
 
--- Brightness up
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(
-    "brightnessctl -e4 -n2 set 5%+"
-), {
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("swayosd-client --brightness raise"), {
+    description = "Brightness up",
     locked = true,
-    repeating = true,
-    description = "Increase brightness",
 })
 
--- Brightness down
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(
-    "brightnessctl -e4 -n2 set 5%-"
-), {
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lower"), {
+    description = "Brightness down",
     locked = true,
-    repeating = true,
-    description = "Decrease brightness",
 })
