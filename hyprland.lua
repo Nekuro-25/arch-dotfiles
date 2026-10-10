@@ -27,3 +27,4 @@ require("keybinds.scratchpad")
 
 -- Window rules
 require("rules.windows")
+require("rules.windows")

@@ -2,14 +2,16 @@
 -- GENERAL SETTINGS
 -- =========================================================
 
+local theme = require("config.theme")
+
 hl.config({
     general = {
         -- Gaps
-        gaps_in = 5,
-        gaps_out = 14,
+        gaps_in = theme.gaps_in,
+        gaps_out = theme.gaps_out,
 
         -- Borders
-        border_size = 1,
+        border_size = 2,
 
         -- Stability over minimum latency
         allow_tearing = false,
@@ -20,10 +22,16 @@ hl.config({
         -- Resize through keyboard bindings
         resize_on_border = false,
 
-        -- Border colors
+        -- Border colors: red -> ice blue gradient on the focused window
         col = {
-            active_border = "rgba(ffffffff)",
-            inactive_border = "rgba(66666699)",
+            active_border = {
+                colors = { theme.red, theme.ice },
+                angle = theme.gradient_angle,
+            },
+            inactive_border = {
+                colors = { theme.border_inactive_1, theme.border_inactive_2 },
+                angle = theme.gradient_angle,
+            },
         },
     },
 
@@ -33,24 +41,31 @@ hl.config({
 
     decoration = {
         -- Rounded corners
-        rounding = 8,
+        rounding = theme.rounding,
         rounding_power = 2,
 
         -- Window opacity
+        -- Kitty already has background_opacity = 0.88, so the inactive
+        -- value is kept high to avoid stacking transparency.
         active_opacity = 1.00,
-        inactive_opacity = 0.80,
+        inactive_opacity = 0.92,
 
-        -- Blur disabled for performance
+        -- Blur (set enabled = false if it hurts performance)
         blur = {
-            enabled = false,
+            enabled = true,
+            size = 6,
+            passes = 2,
+            brightness = 0.9,
+            popups = true,
         },
 
-        -- Subtle separation from wallpaper
+        -- Soft red glow around the focused window
         shadow = {
             enabled = true,
-            range = 6,
-            render_power = 2,
-            color = "rgba(000000aa)",
+            range = 8,
+            render_power = 5,
+            color = theme.shadow_active,
+            color_inactive = theme.shadow_inactive,
         },
     },
 
