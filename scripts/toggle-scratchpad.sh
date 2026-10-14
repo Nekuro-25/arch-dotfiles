@@ -1,18 +1,43 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # =========================================================
 # TOGGLE SCRATCHPAD TERMINAL
 # =========================================================
-# Spawns a dedicated kitty instance (tagged with a unique
-# class) into the "scratchpad" special workspace, or toggles
-# its visibility if it's already running.
+# Membuka kitty khusus (class "kitty-scratchpad") di special
+# workspace "scratchpad", atau menampilkan/menyembunyikannya
+# bila sudah berjalan.
+#
+# Hyprland 0.55+ (config Lua): isi `hyprctl dispatch` adalah
+# ekspresi Lua, bukan sintaks lama "togglespecialworkspace x".
 # =========================================================
 
-SCRATCH_CLASS="kitty-scratchpad"
+CLASS="kitty-scratchpad"
+WS="special:scratchpad"
 
-if hyprctl clients | grep -q "class: $SCRATCH_CLASS"; then
-    hyprctl dispatch togglespecialworkspace scratchpad
+has_window() {
+    hyprctl clients -j 2>/dev/null | jq -e --arg c "$CLASS" 'any(.[]; .class == $c)' >/dev/null
+}
+
+is_visible() {
+    hyprctl monitors -j 2>/dev/null | jq -e --arg w "$WS" 'any(.[]; .specialWorkspace.name == $w)' >/dev/null
+}
+
+toggle() {
+    hyprctl dispatch 'hl.dsp.workspace.toggle_special("scratchpad")' >/dev/null
+}
+
+if has_window; then
+    toggle
 else
-    kitty --class "$SCRATCH_CLASS" &
-    sleep 0.3
-    hyprctl dispatch togglespecialworkspace scratchpad
+    setsid -f kitty --class "$CLASS" >/dev/null 2>&1
+
+    # tunggu jendelanya muncul (maksimal sekitar 3 detik)
+    for _ in $(seq 30); do
+        has_window && break
+        sleep 0.1
+    done
+    sleep 0.15
+
+    # aturan jendela memindahkannya ke special workspace; tampilkan
+    # hanya bila belum terlihat, supaya tidak langsung tersembunyi lagi
+    is_visible || toggle
 fi

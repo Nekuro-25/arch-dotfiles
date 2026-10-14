@@ -1,33 +1,34 @@
 -- =========================================================
--- THEME
+-- THEME — ICE BLUE NIGHT
 -- =========================================================
--- Single source of truth for colors, taken from the dragon
--- wallpaper (dark red + ice blue). Other modules load it with:
+-- Satu-satunya sumber warna untuk Hyprland. Palet sama dengan
+-- Kitty, Waybar, Rofi, Hyprlock, dan Neovim (ice-night).
+-- Dipakai dengan:
 --     local theme = require("config.theme")
 -- Format: rgba(RRGGBBAA)
 -- =========================================================
 
 local theme = {
-    -- Base
-    bg          = "rgba(12060fff)",
-    bg_alt      = "rgba(2a0f1eff)",
-    fg          = "rgba(c9dbe6ff)",
+    -- Dasar
+    bg          = "rgba(141d48ff)",
+    bg_alt      = "rgba(1b2658ff)",
+    fg          = "rgba(dbe6ffff)",
+    muted       = "rgba(9aabe0ff)",
 
-    -- Accents
-    red         = "rgba(e0122eff)",
-    red_dark    = "rgba(7a1a2eff)",
-    ice         = "rgba(8fc4dcff)",
-    mauve       = "rgba(8a5566ff)",
+    -- Aksen
+    accent      = "rgba(5d80e4ff)",   -- azure (biru utama; selaras navy wallpaper)
+    accent_hi   = "rgba(8fa8f2ff)",   -- periwinkle
+    accent2     = "rgba(a8c4ffff)",   -- biru es
 
-    -- Border states
-    border_inactive_1 = "rgba(4a223399)",
-    border_inactive_2 = "rgba(2a0f1e99)",
+    -- Border jendela
+    border_inactive_1 = "rgba(34447f99)",
+    border_inactive_2 = "rgba(1b265899)",
 
-    -- Shadows
-    shadow_active   = "rgba(e0122e55)",  -- soft red glow (focused window)
+    -- Bayangan
+    shadow_active   = "rgba(5d80e455)",  -- glow biru lembut (jendela fokus)
     shadow_inactive = "rgba(00000066)",
 
-    -- Geometry
+    -- Geometri
     gaps_in  = 5,
     gaps_out = 14,
     rounding = 12,

@@ -25,7 +25,7 @@ hl.config({
         -- Border colors: red -> ice blue gradient on the focused window
         col = {
             active_border = {
-                colors = { theme.red, theme.ice },
+                colors = { theme.accent, theme.accent2 },
                 angle = theme.gradient_angle,
             },
             inactive_border = {

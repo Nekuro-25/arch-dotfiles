@@ -8,7 +8,7 @@
 local apps = {
     terminal = "kitty",
     fileManager = "thunar",
-    menu = "rofi -show drun",
+    menu = "pkill -x rofi || rofi -show drun",   -- tekan lagi untuk menutup
 }
 
 return apps

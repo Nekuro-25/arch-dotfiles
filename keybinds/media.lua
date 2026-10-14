@@ -15,9 +15,9 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), {
 })
 
 -- Pause
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), {
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl pause"), {
     locked = true,
-    description = "Play / pause",
+    description = "Pause",
 })
 
 -- Previous track

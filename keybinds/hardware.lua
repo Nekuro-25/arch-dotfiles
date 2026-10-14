@@ -34,3 +34,8 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lo
     description = "Brightness down",
     locked = true,
 })
+
+-- SUPER + I → Tampilkan/sembunyikan panel CPU, RAM, suhu di Waybar
+hl.bind("SUPER + I", hl.dsp.exec_cmd("~/.config/waybar/scripts/toggle-hardware.sh"), {
+    description = "Toggle hardware panel",
+})

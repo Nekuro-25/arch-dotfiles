@@ -78,3 +78,13 @@ hl.window_rule({
     size = { 900, 550 },
     workspace = "special:scratchpad",
 })
+
+-- Anotasi screenshot (swappy) -> float, di tengah
+hl.window_rule({
+    name = "float-swappy",
+    match = {
+        class = "^(swappy)$",
+    },
+    float = true,
+    center = true,
+})

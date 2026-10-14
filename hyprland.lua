@@ -2,6 +2,8 @@
 -- HYPRLAND CONFIGURATION
 -- =========================================================
 -- Main entry point for the modular Hyprland configuration.
+-- Setiap require di bawah harus punya file-nya.
+-- Cek dengan: rice-doctor
 -- =========================================================
 
 -- Core configuration
@@ -24,7 +26,8 @@ require("keybinds.screenshot")
 require("keybinds.notifications")
 require("keybinds.clipboard")
 require("keybinds.scratchpad")
+require("keybinds.menus")      -- SUPER + X / S / N / B (menu Rofi)
 
--- Window rules
+-- Window & layer rules
 require("rules.windows")
-require("rules.windows")
+require("rules.layers")        -- blur untuk Waybar, Rofi, Mako
