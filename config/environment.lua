@@ -22,7 +22,7 @@ hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 
 -- Force native Wayland backend for Electron apps (Discord, etc)
-hl.env("NIXOS_OZONE_WL", "1")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
 -- Firefox native Wayland (not Electron, but same principle)
 hl.env("MOZ_ENABLE_WAYLAND", "1")

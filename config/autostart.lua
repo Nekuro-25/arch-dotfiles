@@ -46,4 +46,7 @@ hl.on("hyprland.start", function()
 
     -- Workspace 4: 1 window communication (Discord)
     hl.exec_cmd("hyprctl dispatch exec '[workspace 4 silent] discord'")
+
+    -- Polkit authentication agent (dialog otorisasi untuk aplikasi yang minta hak akses)
+    hl.exec_cmd("systemctl --user start hyprpolkitagent.service")
 end)
