@@ -26,3 +26,12 @@ hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
 -- Firefox native Wayland (not Electron, but same principle)
 hl.env("MOZ_ENABLE_WAYLAND", "1")
+
+-- Contoh jika dotfiles kamu memanggil env Hyprland:
+-- Sesuaikan sintaks tabel/fungsinya dengan isi file environment.lua kamu
+
+hl.env = {
+	"XMODIFIERS, @im=fcitx",
+	"QT_IM_MODULE, fcitx",
+	"GTK_IM_MODULE, fcitx",
+}
