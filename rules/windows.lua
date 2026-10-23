@@ -4,18 +4,65 @@
 
 -- XWayland drag fix
 hl.window_rule({
-    name = "fix-xwayland-drags",
+	name = "fix-xwayland-drags",
 
-    match = {
-        class = "^$",
-        title = "^$",
-        xwayland = true,
-        float = true,
-        fullscreen = false,
-        pin = false,
-    },
+	match = {
+		class = "^$",
+		title = "^$",
+		xwayland = true,
+		float = true,
+		fullscreen = false,
+		pin = false,
+	},
 
-    no_focus = true,
+	no_focus = true,
+})
+
+-- =========================================================
+-- DEDICATED WORKSPACE PLACEMENT RULES
+-- =========================================================
+-- Memastikan aplikasi autostart mendarat di workspace yang benar
+-- =========================================================
+
+-- Workspace 1: Firefox
+hl.window_rule({
+	name = "workspace-firefox",
+	match = {
+		class = "^(firefox)$",
+	},
+	workspace = "1",
+})
+
+-- Workspace 2: Terminal Utama (Kitty)
+hl.window_rule({
+	name = "workspace-kitty-ws2",
+	match = {
+		class = "^(kitty)$",
+		-- Jika ingin membedakan khusus, bisa diatur lewat initialTitle atau biarkan global kitty
+	},
+	workspace = "2",
+})
+
+-- Workspace 3: Terminal Tambahan (Kitty)
+-- Catatan: Hyprland akan memasukkan jendela kitty berikutnya ke workspace 3
+-- jika di-dispatch ke ws 3 saat autostart.
+
+-- Workspace 9: Discord
+hl.window_rule({
+	name = "workspace-discord",
+	match = {
+		class = "^(discord)$",
+	},
+	workspace = "9",
+})
+
+-- Workspace 10: Spotify Launcher / Spotify
+hl.window_rule({
+	name = "workspace-spotify",
+	match = {
+		class = "^(spotify|spotify-launcher)$",
+	},
+	workspace = "10",
 })
 
 -- =========================================================
@@ -27,64 +74,64 @@ hl.window_rule({
 
 -- Audio control panel -> float, centered
 hl.window_rule({
-    name = "float-pavucontrol",
+	name = "float-pavucontrol",
 
-    match = {
-        class = "^(org.pulseaudio.pavucontrol)$",
-    },
+	match = {
+		class = "^(org.pulseaudio.pavucontrol)$",
+	},
 
-    float = true,
-    center = true,
-    size = { 700, 500 },
+	float = true,
+	center = true,
+	size = { 700, 500 },
 })
 
 -- Bluetooth manager -> float, centered
 hl.window_rule({
-    name = "float-blueman",
+	name = "float-blueman",
 
-    match = {
-        class = "^(blueman-manager)$",
-    },
+	match = {
+		class = "^(blueman-manager)$",
+	},
 
-    float = true,
-    center = true,
-    size = { 500, 400 },
+	float = true,
+	center = true,
+	size = { 500, 400 },
 })
 
 -- Picture-in-Picture video -> float, pin, bottom-right corner
 hl.window_rule({
-    name = "float-pip",
+	name = "float-pip",
 
-    match = {
-        title = "^(Picture-in-Picture)$",
-    },
+	match = {
+		title = "^(Picture-in-Picture)$",
+	},
 
-    float = true,
-    pin = true,
-    size = { 400, 225 },
-    move = { "100%-420", "100%-245" },
+	float = true,
+	pin = true,
+	size = { 400, 225 },
+	move = { "100%-420", "100%-245" },
 })
 
 -- Scratchpad terminal -> float, centered, dedicated special workspace
 hl.window_rule({
-    name = "scratchpad-terminal",
+	name = "scratchpad-terminal",
 
-    match = {
-        class = "^(kitty-scratchpad)$",
-    },
+	match = {
+		class = "^(kitty-scratchpad)$",
+	},
 
-    float = true,
-    center = true,
-    size = { 900, 550 },
-    workspace = "special:scratchpad",
+	float = true,
+	center = true,
+	size = { 900, 550 },
+	workspace = "special:scratchpad",
 })
 
 -- Anotasi screenshot (swappy) -> float, di tengah
 hl.window_rule({
-    name = "float-swappy",
-    match = {
-        class = "^(swappy)$",
-    },
-    float = true,
-    center = true,
+	name = "float-swappy",
+	match = {
+		class = "^(swappy)$",
+	},
+	float = true,
+	center = true,
 })
